@@ -12,23 +12,40 @@ body {
 
 .hidden { display: none !important; }
 
-/* --- ANIMATIONS --- */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-    100% { transform: translateX(0); }
-}
-.shake-active { animation: shake 0.4s ease-in-out; }
-
 /* --- MAIN WINDOW --- */
 .window-container {
-    width: 900px; max-width: 95vw;
+    width: 900px; max-width: 95vw; /* Ensure it fits on mobile */
     background-color: #c0c0c0;
     border: 3px solid #dfdfdf; border-right-color: #404040; border-bottom-color: #404040;
     box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
     display: flex; flex-direction: column;
+    margin: 10px; /* Space for mobile edges */
+}
+
+/* --- RESPONSIVE DESIGN (RWD) --- */
+@media (max-width: 768px) {
+    .window-body {
+        flex-direction: column; /* Stack vertically on phones */
+        padding: 10px;
+    }
+    
+    .window-container {
+        height: auto;
+        margin: 5px;
+    }
+
+    .form-section, .output-section {
+        min-width: 100%; /* Take full width */
+    }
+
+    .btn-row {
+        flex-wrap: wrap;
+    }
+    
+    /* Adjust Modal size for phones */
+    .modal-window, .info-window {
+        width: 90% !important;
+    }
 }
 
 .title-bar {
@@ -42,7 +59,6 @@ body {
     width: 25px; height: 25px; background: #c0c0c0;
     border: 2px outset #fff; cursor: pointer; font-weight: bold;
     font-family: 'Courier Prime', monospace;
-    transition: background 0.1s;
 }
 .win-btn:hover { background: #dfdfdf; }
 .win-btn:active { border-style: inset; }
@@ -50,7 +66,7 @@ body {
 
 /* --- FORM INPUTS --- */
 .window-body { padding: 20px; display: flex; gap: 20px; flex-wrap: wrap; }
-.form-section, .output-section { flex: 1; min-width: 320px; }
+.form-section, .output-section { flex: 1; min-width: 300px; }
 
 fieldset { border: 2px groove #dfdfdf; padding: 15px; height: 100%; background: #c0c0c0; display: flex; flex-direction: column; }
 legend { font-weight: bold; padding: 0 5px; }
@@ -61,11 +77,13 @@ label { display: block; margin-bottom: 5px; font-weight: bold; }
 input, textarea {
     width: 100%; background: white; border: 2px inset #fff; padding: 8px;
     font-family: inherit; outline: none; font-size: 14px;
-    transition: background-color 0.2s, border-color 0.2s;
 }
-input:hover, textarea:hover { background-color: #e0ffff; border-color: #808080; }
 input:focus, textarea:focus { background: #ffffff; border-color: #000080; }
 .input-error { border: 2px solid red !important; background: #ffe0e0 !important; }
+
+/* File Input Styling */
+.source-toggle { margin-bottom: 10px; font-size: 12px; display: flex; gap: 15px; }
+.file-input-retro { font-size: 12px; }
 
 /* --- MAIN BUTTONS --- */
 .btn-row { display: flex; gap: 10px; margin-top: auto; }
@@ -74,7 +92,6 @@ input:focus, textarea:focus { background: #ffffff; border-color: #000080; }
     padding: 12px; background: #c0c0c0; border: 3px outset #fff;
     font-weight: bold; cursor: pointer; font-family: inherit; font-size: 14px;
     text-transform: uppercase; width: 100%;
-    transition: all 0.1s;
 }
 .retro-btn:hover { background: #dcdcdc; box-shadow: 1px 1px 0px #000; }
 .retro-btn:active { border-style: inset; transform: translate(2px, 2px); }
@@ -89,6 +106,7 @@ input:focus, textarea:focus { background: #ffffff; border-color: #000080; }
 .card-wrapper {
     min-height: 300px; display: flex; align-items: center; justify-content: center;
     background: #808080; border: 2px inset #fff; padding: 10px;
+    overflow: hidden; /* Prevent overflow on small screens */
 }
 .empty-state { color: #fff; font-style: italic; }
 
@@ -96,11 +114,9 @@ input:focus, textarea:focus { background: #ffffff; border-color: #000080; }
     background: white; border: 3px solid black; padding: 15px;
     display: flex; flex-direction: column; align-items: center;
     box-shadow: 5px 5px 15px rgba(0,0,0,0.5); border-radius: 8px; width: 280px;
+    transition: transform 0.3s;
 }
-.id-header {
-    width: 100%; background: black; color: white; text-align: center;
-    font-weight: bold; padding: 8px; margin-bottom: 15px; letter-spacing: 2px;
-}
+.id-header { width: 100%; background: black; color: white; text-align: center; font-weight: bold; padding: 8px; margin-bottom: 15px; letter-spacing: 2px; }
 .id-photo { width: 120px; height: 120px; border: 2px solid black; object-fit: cover; margin-bottom: 10px; }
 .id-name { font-size: 20px; font-weight: bold; text-transform: uppercase; border-bottom: 2px solid black; margin-bottom: 5px; text-align: center; width: 100%; }
 .id-bio { font-size: 12px; text-align: center; margin-bottom: 15px; word-wrap: break-word; }
@@ -145,4 +161,17 @@ input:focus, textarea:focus { background: #ffffff; border-color: #000080; }
 .social-btn:active { border-style: inset; transform: scale(0.95); }
 .instagram:hover { color: #E1306C; }
 .github:hover { color: #000000; }
-.tiktok:hover { color: #ff0050; }
+.tiktok:hover {
+    background: linear-gradient(45deg, #00f2ea, #ff0050);
+    color: white; border-color: black; box-shadow: 0 0 10px rgba(255, 0, 80, 0.5); transform: scale(1.1); 
+}
+
+/* SHAKE ANIMATION */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+.shake-active { animation: shake 0.4s ease-in-out; }
